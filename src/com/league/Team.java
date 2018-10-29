@@ -28,11 +28,26 @@ class Team {
         System.out.println("Player: " + player_name + ", not found.");
     }
 
+    String get_player(int index) {
+        return players.get(index).get_name();
+    }
+
     void print() {
         System.out.println("Team: " + team_name);
-        for (Player player : players)
+        for (Player player : players) {
+            player.reverse_name();
             System.out.println(player.get_name());
+        }
     }
 
     String get_team_name() { return team_name; }
+
+    ArrayList<String> find(String sub_name) {
+        ArrayList<String> names = new ArrayList<>();
+        for (Player player : players) {
+            if (player.get_name().toLowerCase().contains(sub_name.toLowerCase()))
+                names.add(player.get_name());
+        }
+        return names;
+    }
 }
