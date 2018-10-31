@@ -1,17 +1,17 @@
 package com.league;
 
 class Goal {
-    private String teamThatScored;
-    private String playerWhoScored;
+    private Team teamThatScored;
+    private Player playerWhoScored;
     private double time;
 
-    Goal(String teamName, String playerName, double time) {
-        teamThatScored = teamName;
-        playerWhoScored = playerName;
+    Goal(Team team, Player player, double time) {
+        teamThatScored = team;
+        playerWhoScored = player;
         this.time = time;
     }
 
-    String getTeam() { return teamThatScored; }
-    String getPlayer() { return playerWhoScored; }
+    Team getTeam() { return teamThatScored; }
+    Player getPlayer() { return playerWhoScored; }
     double getTime() { return time; }
 }

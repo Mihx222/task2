@@ -7,6 +7,8 @@ class Game {
     private ArrayList<Goal> goals = new ArrayList<>();
     private String gameName = "Unnamed";
 
+    String getGameName() { return gameName; }
+
     Game(Team team1, Team team2, String gameName) {
         this.team1 = team1;
         this.team2 = team2;
@@ -18,7 +20,7 @@ class Game {
         this.team2 = team2;
     }
 
-    void addGoal(String teamName, String playerName, double time) {
+    void addGoal(Team teamName, Player playerName, double time) {
         Goal goal = new Goal(teamName, playerName, time);
         goals.add(goal);
     }
@@ -29,7 +31,7 @@ class Game {
         System.out.println("Goals:");
         for (Goal goal : goals) {
             System.out.println("Goal scored after " + goal.getTime() +
-                    ", by " + goal.getPlayer() + ", from " + goal.getTeam());
+                    ", by " + goal.getPlayer().getName() + ", from " + goal.getTeam().getTeamName());
         }
     }
 }

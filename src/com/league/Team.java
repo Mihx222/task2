@@ -1,7 +1,6 @@
 package com.league;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 class Team {
     private ArrayList<Player> players = new ArrayList<>();
@@ -9,37 +8,31 @@ class Team {
 
     Team(String teamName) { this.teamName = teamName; }
 
-    void add(String playerName) {
+    void setTeamName(String teamName) { this.teamName = teamName; }
+    ArrayList<Player> getPlayers() { return players; }
+    String getTeamName() { return teamName; }
+
+    void addPlayer(String playerName) {
         Player player = new Player(playerName);
         players.add(player);
     }
 
-    void remove(String playerName) {
-        Iterator itr = players.iterator();
-        while (itr.hasNext()) {
-            Player temp = (Player)itr.next();
-            if (temp.getName().equals(playerName)) {
-                System.out.println("Removed player: " + temp.getName());
-                itr.remove();
-                return;
-            }
+    void remove(Player playerInst) {
+        ArrayList<Player> playersToRemove = new ArrayList<>();
+        for (Player player : players) {
+            if (player.getName().equals(playerInst.getName()))
+                playersToRemove.add(playerInst);
         }
-        System.out.println("Player: " + playerName + ", not found.");
+        players.removeAll(playersToRemove);
     }
 
-    String getPlayer(int index) {
-        return players.get(index).getName();
-    }
-
-    void print() {
+    void printPlayers() {
         System.out.println("Team: " + teamName);
         for (Player player : players) {
             player.reverseName();
             System.out.println(player.getName());
         }
     }
-
-    String getTeamName() { return teamName; }
 
     ArrayList<String> find(String subName) {
         ArrayList<String> names = new ArrayList<>();
