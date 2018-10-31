@@ -26,10 +26,20 @@ public class League {
         System.out.println();
 
         // Create and simulate a league game
+        System.out.println(iLeague.getLeagueName());
+        System.out.println();
+
         iLeague.addGame(iLeague.getTeam("Reds"), iLeague.getTeam("Blues"), "Match No. 1");
+        iLeague.addGame(iLeague.getTeam("Reds"), iLeague.getTeam("Blues"), "Match No. 2");
+
         System.out.println(iLeague.getGame("Match No. 1").getGameName());
         iLeague.playGame(iLeague.getGame("match no. 1"));
         iLeague.getGame("match no. 1").printStatistics();
+
+        System.out.println();
+        System.out.println(iLeague.getGame("Match No. 2").getGameName());
+        iLeague.playGame(iLeague.getGame("match no. 2"));
+        iLeague.getGame("match no. 2").printStatistics();
     }
 
     private ArrayList<Team> teams = new ArrayList<>();
@@ -59,7 +69,7 @@ public class League {
     }
 
     private League(String leagueName) { this.leagueName = leagueName; }
-    String getLeagueName() { return leagueName; }
+    private String getLeagueName() { return leagueName; }
 
     private void addTeam(String teamName) {
         Team team = new Team(teamName);
@@ -74,7 +84,7 @@ public class League {
     // Simulate a game
     private void playGame(Game gameToPlay) {
         // Random engine with seed
-        Random rand = new Random(System.currentTimeMillis());
+        Random rand = new Random();
 
         // Generate random amount of goals, up to 3 goals per game
         int nGoals = rand.nextInt(4);
