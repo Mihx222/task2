@@ -1,65 +1,69 @@
 package com.league;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class League {
     public static void main(String[] args) {
-        // Create new league
+//        Create new league
         League iLeague = new League("International League");
 
-        // Add a team with players to the league
+//        Add a team with players to the league
         iLeague.addTeam("Reds");
-        iLeague.getTeam("Reds").addPlayer("George Eliot");
-        iLeague.getTeam("Reds").addPlayer("Graham Greene");
-        iLeague.getTeam("Reds").addPlayer("Geoffrey Chaucer");
+        iLeague.getLeagueTeam("Reds").addPlayer("George Eliot");
+        iLeague.getLeagueTeam("Reds").addPlayer("Graham Greene");
+        iLeague.getLeagueTeam("Reds").addPlayer("Geoffrey Chaucer");
 
-        // Add a team with players to the league
+//        Add a team with players to the league
         iLeague.addTeam("Blues");
-        iLeague.getTeam("Blues").addPlayer("Robert Service");
-        iLeague.getTeam("Blues").addPlayer("Robbie Burns");
-        iLeague.getTeam("Blues").addPlayer("Rafael Sabatini");
+        iLeague.getLeagueTeam("Blues").addPlayer("Robert Service");
+        iLeague.getLeagueTeam("Blues").addPlayer("Robbie Burns");
+        iLeague.getLeagueTeam("Blues").addPlayer("Rafael Sabatini");
 
-        iLeague.getTeam("Reds").printPlayers();
-        System.out.println();
-        iLeague.getTeam("Blues").printPlayers();
-        System.out.println();
+//        iLeague.getLeagueTeam("Reds").printPlayers();
+//        System.out.println();
+//        iLeague.getLeagueTeam("Blues").printPlayers();
+//        System.out.println();
 
-        // Create and simulate a league game
-        System.out.println(iLeague.getLeagueName());
-        System.out.println();
+//        Create league games
+        iLeague.addGame(iLeague.getLeagueTeam("Reds"),
+                iLeague.getLeagueTeam("Blues"), "Match No. 1");
+        iLeague.addGame(iLeague.getLeagueTeam("Reds"),
+                iLeague.getLeagueTeam("Blues"), "Match No. 2");
+        iLeague.addGame(iLeague.getLeagueTeam("Reds"),
+                iLeague.getLeagueTeam("Blues"), "Match No. 3");
+        iLeague.addGame(iLeague.getLeagueTeam("Reds"),
+                iLeague.getLeagueTeam("Blues"), "Match No. 4");
 
-        iLeague.addGame(iLeague.getTeam("Reds"), iLeague.getTeam("Blues"), "Match No. 1");
-        iLeague.addGame(iLeague.getTeam("Reds"), iLeague.getTeam("Blues"), "Match No. 2");
+//        Simulate league games
+        gameUtils.playGame(iLeague.getGame("match no. 1"));
+        gameUtils.playGame(iLeague.getGame("match no. 2"));
+        gameUtils.playGame(iLeague.getGame("match no. 3"));
+        gameUtils.playGame(iLeague.getGame("match no. 4"));
 
-        System.out.println(iLeague.getGame("Match No. 1").getGameName());
-        iLeague.playGame(iLeague.getGame("match no. 1"));
-        iLeague.getGame("match no. 1").printStatistics();
-
-        System.out.println();
-        System.out.println(iLeague.getGame("Match No. 2").getGameName());
-        iLeague.playGame(iLeague.getGame("match no. 2"));
-        iLeague.getGame("match no. 2").printStatistics();
+        iLeague.printStatistics();
     }
 
-    private ArrayList<Team> teams = new ArrayList<>();
+    private ArrayList<Team> leagueTeams = new ArrayList<>();
     private ArrayList<Game> games = new ArrayList<>();
     private String leagueName;
 
-    ArrayList<Team> getTeams() { return teams; }
+    private League(String leagueName) { this.leagueName = leagueName; }
 
-    // Get instance of Team object by teamName
-    private Team getTeam(String teamName) {
-        for (Team team : teams) {
+    ArrayList<Team> getLeagueTeams() { return leagueTeams; }
+    ArrayList<Game> getGames() { return games; }
+    private String getLeagueName() { return leagueName; }
+
+//    Get instance of Team object by teamName
+    private Team getLeagueTeam(String teamName) {
+        for (Team team : leagueTeams) {
             if (team.getTeamName().toLowerCase().equals(teamName.toLowerCase()))
                 return team;
         }
         throw new IllegalArgumentException("Team: " + teamName + " not found.");
     }
 
-    ArrayList<Game> getGames() { return games; }
-
-    // Get instance of Game object by gameName
+//    Get instance of Game object by gameName
     private Game getGame(String gameName) {
         for (Game game : games) {
             if (game.getGameName().toLowerCase().equals(gameName.toLowerCase()))
@@ -68,12 +72,9 @@ public class League {
         throw new IllegalArgumentException("Game: " + gameName + " not found.");
     }
 
-    private League(String leagueName) { this.leagueName = leagueName; }
-    private String getLeagueName() { return leagueName; }
-
     private void addTeam(String teamName) {
         Team team = new Team(teamName);
-        teams.add(team);
+        leagueTeams.add(team);
     }
 
     private void addGame(Team team1, Team team2, String gameName) {
@@ -81,33 +82,29 @@ public class League {
         games.add(game);
     }
 
-    // Simulate a game
-    private void playGame(Game gameToPlay) {
-        // Random engine with seed
-        Random rand = new Random();
+    private void printStatistics() {
+        System.out.println(leagueName);
+        System.out.println();
+        for (Game game : games) {
+            System.out.println(game.getPlayingTeams().get(0).getTeamName() + " V/S " +
+                    game.getPlayingTeams().get(1).getTeamName());
+            System.out.println("Scored goals:");
 
-        // Generate random amount of goals, up to 3 goals per game
-        int nGoals = rand.nextInt(4);
-
-        // Generate random team index, only 2 teams can play at a time
-        int teamIndex = rand.nextInt(2);
-
-        // Generate random player index
-        int playerIndex = gameToPlay.getPlayingTeams().get(teamIndex).getPlayers().size() - 1;
-
-        // Generate random time, up to 90 minutes per game
-        double randomTime = 90 * rand.nextDouble();
-
-        for (int i = 0; i < nGoals; i++) {
-            // Add a goal
-            gameToPlay.addGoal(gameToPlay.getPlayingTeams().get(teamIndex),
-                    gameToPlay.getPlayingTeams().get(teamIndex).getPlayers().get(playerIndex),
-                    randomTime);
-
-            // Reinitialize random variables
-            teamIndex = rand.nextInt(2);
-            playerIndex = rand.nextInt(gameToPlay.getPlayingTeams().get(teamIndex).getPlayers().size());
-            randomTime = randomTime + (90 - randomTime) * rand.nextDouble();
+            if (game.getScoredGoals().size() == 0)
+                System.out.println("No goals have been scored.");
+            else {
+                for (Goal goal : game.getScoredGoals()) {
+                    System.out.println("Goal scored after " +
+                            new DecimalFormat("#.#").format(goal.getTime()) +
+                            " minutes, by " + goal.getPlayer().getName() +
+                            ", from " + goal.getTeam().getTeamName());
+                }
+            }
+            System.out.println();
+            System.out.println("Total goals scored by " + game.getPlayingTeams().get(0).getTeamName() +
+                    ": " + game.getPlayingTeams().get(0).getTotalGoalsScored());
+            System.out.println("Total goals scored by " + game.getPlayingTeams().get(1).getTeamName() +
+                    ": " + game.getPlayingTeams().get(0).getTotalGoalsScored());
         }
     }
 }

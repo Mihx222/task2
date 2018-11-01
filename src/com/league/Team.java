@@ -5,17 +5,20 @@ import java.util.ArrayList;
 class Team {
     private ArrayList<Player> players = new ArrayList<>();
     private String teamName;
+    private int totalGoalsScored = 0;
 
     Team(String teamName) { this.teamName = teamName; }
 
-    void setTeamName(String teamName) { this.teamName = teamName; }
     ArrayList<Player> getPlayers() { return players; }
     String getTeamName() { return teamName; }
+    int getTotalGoalsScored() { return totalGoalsScored; }
 
     void addPlayer(String playerName) {
         Player player = new Player(playerName);
         players.add(player);
     }
+
+    void incrementTotalScoredGoals() { totalGoalsScored++; }
 
     void remove(Player playerInst) {
         ArrayList<Player> playersToRemove = new ArrayList<>();
