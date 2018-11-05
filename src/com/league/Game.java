@@ -1,31 +1,71 @@
 package com.league;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 class Game {
-    private ArrayList<Team> teams = new ArrayList<>();
-    private ArrayList<Goal> goals = new ArrayList<>();
-    private String gameName = "Unnamed";
+    private Team team1, team2;
+    private ArrayList<Goal> team1Goals = new ArrayList<>();
+    private ArrayList<Goal> team2Goals = new ArrayList<>();
+    private Team winner;
+    private String gameName;
 
     String getGameName() { return gameName; }
-    ArrayList<Team> getPlayingTeams() { return teams; }
-    ArrayList<Goal> getScoredGoals() { return goals; }
 
-    Game(Team team1, Team team2, String gameName) {
-        teams.add(team1);
-        teams.add(team2);
-        this.gameName = gameName;
+    Team getTeam1() {
+        return team1;
     }
 
-    Game(Team team1, Team team2) {
-        teams.add(team1);
-        teams.add(team2);
+    Team getTeam2() {
+        return team2;
+    }
+
+    Team getTeam(int index) {
+        if (index == 0)
+            return team1;
+        else if (index == 1)
+            return team2;
+        else
+            throw new ArrayIndexOutOfBoundsException("Invalid index!");
+    }
+
+    ArrayList<Goal> getScoredGoals(Team team) {
+        if (team1.getTeamName().equals(team.getTeamName()))
+            return team1Goals;
+        else if (team2.getTeamName().equals(team.getTeamName()))
+            return team2Goals;
+        else
+            throw new IllegalArgumentException("Team " + team.getTeamName() + " not found.");
+    }
+
+    ArrayList<Goal> getTotalScoredGoals() {
+        ArrayList<Goal> allGoals = new ArrayList<>(team1Goals);
+        allGoals.addAll(team2Goals);
+        return allGoals;
+    }
+
+    Team getWinner() {
+        return winner;
+    }
+
+    void setWinner(Team winner) {
+        this.winner = winner;
+    }
+
+    Game(Team team1, Team team2, String gameName) {
+        this.team1 = new Team(team1);
+        this.team2 = new Team(team2);
+        this.gameName = gameName;
     }
 
     void addGoal(Team team, Player player, double time) {
         Goal goal = new Goal(team, player, time);
-        goals.add(goal);
-        team.incrementTotalScoredGoals();
+        if (team1.getTeamName().equals(team.getTeamName())) {
+            team1Goals.add(goal);
+            team1.incrementTotalScoredGoals();
+        }
+        else if (team2.getTeamName().equals(team.getTeamName())) {
+            team2Goals.add(goal);
+            team2.incrementTotalScoredGoals();
+        }
     }
 }

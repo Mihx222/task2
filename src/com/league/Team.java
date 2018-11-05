@@ -9,6 +9,12 @@ class Team {
 
     Team(String teamName) { this.teamName = teamName; }
 
+    Team(Team teamInst) {
+        players = teamInst.getPlayers();
+        teamName = teamInst.getTeamName();
+        totalGoalsScored = teamInst.getTotalGoalsScored();
+    }
+
     ArrayList<Player> getPlayers() { return players; }
     String getTeamName() { return teamName; }
     int getTotalGoalsScored() { return totalGoalsScored; }

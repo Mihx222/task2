@@ -52,7 +52,7 @@ public class League {
 
     ArrayList<Team> getLeagueTeams() { return leagueTeams; }
     ArrayList<Game> getGames() { return games; }
-    private String getLeagueName() { return leagueName; }
+    String getLeagueName() { return leagueName; }
 
 //    Get instance of Team object by teamName
     private Team getLeagueTeam(String teamName) {
@@ -84,27 +84,32 @@ public class League {
 
     private void printStatistics() {
         System.out.println(leagueName);
-        System.out.println();
         for (Game game : games) {
-            System.out.println(game.getPlayingTeams().get(0).getTeamName() + " V/S " +
-                    game.getPlayingTeams().get(1).getTeamName());
+            System.out.println();
+            System.out.println(game.getTeam(0).getTeamName() + " V/S " +
+                    game.getTeam(1).getTeamName());
             System.out.println("Scored goals:");
 
-            if (game.getScoredGoals().size() == 0)
+            if (game.getTotalScoredGoals().size() == 0)
                 System.out.println("No goals have been scored.");
             else {
-                for (Goal goal : game.getScoredGoals()) {
+                for (Goal goal : game.getTotalScoredGoals()) {
                     System.out.println("Goal scored after " +
                             new DecimalFormat("#.#").format(goal.getTime()) +
                             " minutes, by " + goal.getPlayer().getName() +
                             ", from " + goal.getTeam().getTeamName());
                 }
             }
-            System.out.println();
-            System.out.println("Total goals scored by " + game.getPlayingTeams().get(0).getTeamName() +
-                    ": " + game.getPlayingTeams().get(0).getTotalGoalsScored());
-            System.out.println("Total goals scored by " + game.getPlayingTeams().get(1).getTeamName() +
-                    ": " + game.getPlayingTeams().get(0).getTotalGoalsScored());
+            if (game.getWinner() == null)
+                System.out.println("Draw!");
+            else
+                System.out.println("Winner: " + game.getWinner().getTeamName());
+        }
+
+        System.out.println();
+        for (Team team : leagueTeams) {
+            System.out.println("Total goals scored by " + team.getTeamName() +
+                    ": " + team.getTotalGoalsScored());
         }
     }
 }
